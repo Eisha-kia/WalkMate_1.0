@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'signup_page.dart';
 import 'home_page.dart';
 
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -11,12 +12,18 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  String errorMessage = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
-        child: Padding(
+        reverse:true,
+         child: Padding(
           padding: EdgeInsets.all(24),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -79,6 +86,8 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 8),
 
               TextField(
+                controller: emailController,
+                autofocus: false,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   hintText: 'Enter your email',
@@ -95,6 +104,8 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 8),
 
               TextField(
+                controller: passwordController,
+                autofocus: false,
                 obscureText: true,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
@@ -102,11 +113,32 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
 
-              SizedBox(height: 30),
+              SizedBox(height: 10),
+
+              Text(
+                errorMessage,
+                style: TextStyle(color: Colors.red, fontSize: 13),
+              ),
+
+              SizedBox(height: 20),
 
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
+                  String email = emailController.text;
+                  String password = passwordController.text;
+
+                  if (email.isEmpty || password.isEmpty) {
+                    setState(() {
+                      errorMessage = 'Please fill in all fields';
+                    });
+                    return;
+                  }
+
+                  setState(() {
+                    errorMessage = '';
+                  });
+
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => HomePage()),
                   );

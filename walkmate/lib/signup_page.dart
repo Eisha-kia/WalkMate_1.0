@@ -10,6 +10,12 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
 
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  String errorMessage = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,6 +84,8 @@ class _SignUpPageState extends State<SignUpPage> {
               SizedBox(height: 8),
 
               TextField(
+                controller: nameController,
+                autofocus: false,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   hintText: 'Enter your name',
@@ -94,6 +102,8 @@ class _SignUpPageState extends State<SignUpPage> {
               SizedBox(height: 8),
 
               TextField(
+                controller: emailController,
+                autofocus: false,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   hintText: 'Enter your email',
@@ -110,6 +120,8 @@ class _SignUpPageState extends State<SignUpPage> {
               SizedBox(height: 8),
 
               TextField(
+                controller: passwordController,
+                autofocus: false,
                 obscureText: true,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
@@ -117,14 +129,33 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
 
-              SizedBox(height: 30),
+              SizedBox(height: 10),
+
+              Text(
+                errorMessage,
+                style: TextStyle(color: Colors.red, fontSize: 13),
+              ),
+
+              SizedBox(height: 20),
 
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
-                  );
+                  String name = nameController.text;
+                  String email = emailController.text;
+                  String password = passwordController.text;
+
+                  if (name.isEmpty || email.isEmpty || password.isEmpty) {
+                    setState(() {
+                      errorMessage = 'Please fill in all fields';
+                    });
+                    return;
+                  }
+
+                  setState(() {
+                    errorMessage = '';
+                  });
+
+                  Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green.shade700,
