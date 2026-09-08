@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class SafetyCompanionPage extends StatelessWidget {
   const SafetyCompanionPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.black,
-        systemNavigationBarIconBrightness: Brightness.light,
-      ),
-    );
-
     return Scaffold(
       backgroundColor: Colors.black,
 
@@ -68,14 +60,14 @@ class SafetyCompanionPage extends StatelessWidget {
           ),
         ),
       ),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Colors.black,
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: Colors.green,
-          unselectedItemColor: Colors.grey,
-          currentIndex: 0,
 
-          items: const [
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.black,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.green,
+        unselectedItemColor: Colors.grey,
+        currentIndex: 0,
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
@@ -92,8 +84,8 @@ class SafetyCompanionPage extends StatelessWidget {
             icon: Icon(Icons.person_outline),
             label: 'Profile',
           ),
-          ],
-        ),
+        ],
+      ),
     );
   }
 }
