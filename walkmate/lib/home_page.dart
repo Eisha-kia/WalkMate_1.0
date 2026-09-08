@@ -38,13 +38,7 @@ class HomePage extends StatelessWidget {
               Icons.notifications_none,
               color: Colors.white,
             ),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('No new notifications'),
-                ),
-              );
-            },
+            onPressed: () {},
           ),
         ],
       ),
@@ -54,7 +48,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
+            const SizedBox(height: 50),
 
             const Text(
               'WELCOME BACK',
@@ -68,7 +62,7 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 5),
 
             const Text(
-              'ALEX',
+              'ALEX!',
               style: TextStyle(
                 color: Colors.green,
                 fontSize: 80,
@@ -86,13 +80,13 @@ class HomePage extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
 
             Container(
-              width: double.infinity,
+              width: 400,
               height: 130,
               decoration: BoxDecoration(
-                color: const Color(0xFF141A16),
+                color: Colors.white10,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: Colors.green,
