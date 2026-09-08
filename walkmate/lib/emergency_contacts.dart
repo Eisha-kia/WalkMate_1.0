@@ -208,7 +208,7 @@ class _EmergencyContactsPageState extends State<EmergencyContactsPage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: bg,
+        backgroundColor: Colors.black,
         selectedItemColor: green,
         unselectedItemColor: Colors.grey,
         currentIndex: 1,
