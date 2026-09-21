@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
+import 'sos_page.dart';
 
-class SafetyCompanionPage extends StatelessWidget {
+class SafetyCompanionPage extends StatefulWidget {
   const SafetyCompanionPage({super.key});
+
+  @override
+  State<SafetyCompanionPage> createState() => _SafetyCompanionPageState();
+}
+
+class _SafetyCompanionPageState extends State<SafetyCompanionPage> {
+  double _dragOffset = 0.0;
+  bool _hasNavigated = false;
+  bool _isPressed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -26,20 +36,87 @@ class SafetyCompanionPage extends StatelessWidget {
 
               const SizedBox(height: 40),
 
-              Container(
-                width: 250,
-                height: 250,
-                decoration: const BoxDecoration(
-                  color: Colors.green,
-                  shape: BoxShape.circle,
-                ),
-                child: const Center(
-                  child: Text(
-                    'PUSH',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 35,
-                      fontWeight: FontWeight.bold,
+              GestureDetector(
+                onVerticalDragDown: (details) {
+                  setState(() {
+                    _isPressed = true;
+                  });
+                },
+                onVerticalDragStart: (details) {
+                  setState(() {
+                    _dragOffset = 0.0;
+                    _hasNavigated = false;
+                  });
+                },
+                onVerticalDragUpdate: (details) {
+                  setState(() {
+                    if (_dragOffset + details.delta.dy <= 0) {
+                      _dragOffset += details.delta.dy;
+                    }
+                  });
+
+                  if (_dragOffset < -150 && !_hasNavigated) {
+                    _hasNavigated = true;
+                    setState(() {
+                      _isPressed = false;
+                      _dragOffset = 0.0;
+                    });
+                    Navigator.pop(context);
+                  }
+                },
+                onVerticalDragEnd: (details) {
+                  setState(() {
+                    _isPressed = false;
+                    _dragOffset = 0.0;
+                  });
+
+                  if (!_hasNavigated) {
+                    _hasNavigated = true;
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SOSPage(),
+                      ),
+                    );
+                  }
+                },
+                onVerticalDragCancel: () {
+                  setState(() {
+                    _isPressed = false;
+                    _dragOffset = 0.0;
+                  });
+
+                  if (!_hasNavigated) {
+                    _hasNavigated = true;
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SOSPage(),
+                      ),
+                    );
+                  }
+                },
+                child: Transform.translate(
+                  offset: Offset(0, _dragOffset),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 150),
+                    width: _isPressed ? 210 : 250,
+                    height: _isPressed ? 210 : 250,
+                    decoration: const BoxDecoration(
+                      color: Colors.green,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: _dragOffset < -20
+                          ? const SizedBox.shrink()
+                          : const Text(
+                        'PUSH',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 35,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ),
