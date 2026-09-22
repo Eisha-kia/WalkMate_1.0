@@ -191,43 +191,31 @@ class _HomePageState extends State<HomePage> {
         ],
 
         onTap: (index) async {
-
           if (index == 1) {
-
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                const EmergencyContactsPage(),
+                builder: (context) => const EmergencyContactsPage(),
               ),
             );
-          }
-
-          else if (index == 2) {
-
+          } else if (index == 2) {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                const ChatsPage(),
+                builder: (context) => const ChatsPage(),
               ),
             );
-          }
-
-          else if (index == 3) {
-
+          } else if (index == 3) {
             await Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                const ProfilePage(),
+                builder: (context) => const ProfilePage(),
               ),
             );
 
             await FirebaseAuth.instance.currentUser!.reload();
 
-            User? user =
-                FirebaseAuth.instance.currentUser;
+            User? user = FirebaseAuth.instance.currentUser;
 
             setState(() {
               name = user?.displayName ?? 'User';

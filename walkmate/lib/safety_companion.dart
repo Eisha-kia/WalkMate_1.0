@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'sos_page.dart';
 import 'dart:async';
+import 'emergency_contacts.dart';
+import 'home_page.dart';
+import 'profile_page.dart';
+import 'chats.dart';
 
 class SafetyCompanionPage extends StatefulWidget {
   const SafetyCompanionPage({super.key});
@@ -161,31 +165,7 @@ class _SafetyCompanionPageState extends State<SafetyCompanionPage> {
         ),
       ),
 
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.black,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.green,
-        unselectedItemColor: Colors.grey,
-        currentIndex: 0,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: 'Contacts',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble_outline),
-            label: 'Chat',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            label: 'Profile',
-          ),
-        ],
-      ),
+
     );
   }
 }

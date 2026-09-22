@@ -247,7 +247,7 @@ class _EmergencyContactsPageState extends State<EmergencyContactsPage> {
           }
 
           if (index == 2) {
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => const ChatsPage(),
@@ -256,7 +256,7 @@ class _EmergencyContactsPageState extends State<EmergencyContactsPage> {
           }
 
           if (index == 3) {
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => const ProfilePage(),
