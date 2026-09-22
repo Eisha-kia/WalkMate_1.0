@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'sos_page.dart';
+import 'dart:async';
 
 class SafetyCompanionPage extends StatefulWidget {
   const SafetyCompanionPage({super.key});
@@ -9,12 +10,31 @@ class SafetyCompanionPage extends StatefulWidget {
 }
 
 class _SafetyCompanionPageState extends State<SafetyCompanionPage> {
-  double _dragOffset = 0.0;
-  bool _hasNavigated = false;
-  bool _isPressed = false;
+  double dragOffset = 0.0;
+  bool hasNavigated = false;
+  bool isPressed = false;
+  bool isSafe=false;
 
   @override
   Widget build(BuildContext context) {
+
+    if(isSafe){
+      return const Scaffold(
+          backgroundColor: Colors.green,
+          body: Center(
+            child: Text(
+              'You are Safe',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'serif',
+              ),
+            ),
+          )
+      );
+    }
+
     return Scaffold(
       backgroundColor: Colors.black,
 
@@ -39,39 +59,42 @@ class _SafetyCompanionPageState extends State<SafetyCompanionPage> {
               GestureDetector(
                 onVerticalDragDown: (details) {
                   setState(() {
-                    _isPressed = true;
+                    isPressed = true;
                   });
                 },
                 onVerticalDragStart: (details) {
                   setState(() {
-                    _dragOffset = 0.0;
-                    _hasNavigated = false;
+                    dragOffset = 0.0;
+                    hasNavigated = false;
                   });
                 },
                 onVerticalDragUpdate: (details) {
                   setState(() {
-                    if (_dragOffset + details.delta.dy <= 0) {
-                      _dragOffset += details.delta.dy;
+                    if(dragOffset + details.delta.dy <=0){
+                      dragOffset+= details.delta.dy;
                     }
                   });
-
-                  if (_dragOffset < -150 && !_hasNavigated) {
-                    _hasNavigated = true;
+                  if(dragOffset<-150 && !hasNavigated){
+                    hasNavigated=true;
                     setState(() {
-                      _isPressed = false;
-                      _dragOffset = 0.0;
+                      isPressed=false;
+                      isSafe= true;
                     });
-                    Navigator.pop(context);
+                    Timer(const Duration(seconds: 2), () {
+                      if (mounted) {
+                        Navigator.pop(context);
+                      }
+                    });
                   }
                 },
                 onVerticalDragEnd: (details) {
                   setState(() {
-                    _isPressed = false;
-                    _dragOffset = 0.0;
+                    isPressed = false;
+                    dragOffset = 0.0;
                   });
 
-                  if (!_hasNavigated) {
-                    _hasNavigated = true;
+                  if (!hasNavigated) {
+                    hasNavigated = true;
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -82,12 +105,12 @@ class _SafetyCompanionPageState extends State<SafetyCompanionPage> {
                 },
                 onVerticalDragCancel: () {
                   setState(() {
-                    _isPressed = false;
-                    _dragOffset = 0.0;
+                    isPressed = false;
+                    dragOffset = 0.0;
                   });
 
-                  if (!_hasNavigated) {
-                    _hasNavigated = true;
+                  if (!hasNavigated) {
+                    hasNavigated = true;
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -97,17 +120,17 @@ class _SafetyCompanionPageState extends State<SafetyCompanionPage> {
                   }
                 },
                 child: Transform.translate(
-                  offset: Offset(0, _dragOffset),
+                  offset: Offset(0, dragOffset),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 150),
-                    width: _isPressed ? 210 : 250,
-                    height: _isPressed ? 210 : 250,
+                    width: isPressed ? 210 : 250,
+                    height: isPressed ? 210 : 250,
                     decoration: const BoxDecoration(
                       color: Colors.green,
                       shape: BoxShape.circle,
                     ),
                     child: Center(
-                      child: _dragOffset < -20
+                      child: dragOffset < -20
                           ? const SizedBox.shrink()
                           : const Text(
                         'PUSH',
