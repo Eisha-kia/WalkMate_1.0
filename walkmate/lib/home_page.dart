@@ -20,19 +20,41 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    loadUserName();
+  }
 
-    User? user = FirebaseAuth.instance.currentUser;
+  Future<void> loadUserName() async {
 
-    name = user?.displayName ?? 'User';
+    User? user =
+        FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      return;
+    }
+
+    await user.reload();
+
+    user = FirebaseAuth.instance.currentUser;
+
+    if (mounted) {
+      setState(() {
+        name = user?.displayName ?? 'User';
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
+
       backgroundColor: Colors.black,
 
       appBar: AppBar(
-        backgroundColor: Colors.green.shade700,
+
+        backgroundColor:
+        Colors.green.shade700,
+
         elevation: 0,
 
         leading: IconButton(
@@ -45,6 +67,7 @@ class _HomePageState extends State<HomePage> {
 
         title: const Text(
           'WalkMate',
+
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -52,6 +75,7 @@ class _HomePageState extends State<HomePage> {
         ),
 
         actions: [
+
           IconButton(
             icon: const Icon(
               Icons.notifications_none,
@@ -63,16 +87,21 @@ class _HomePageState extends State<HomePage> {
       ),
 
       body: Padding(
+
         padding: const EdgeInsets.all(20),
 
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+
+          crossAxisAlignment:
+          CrossAxisAlignment.start,
 
           children: [
+
             const SizedBox(height: 50),
 
             const Text(
               'WELCOME BACK',
+
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24,
@@ -84,6 +113,7 @@ class _HomePageState extends State<HomePage> {
 
             Text(
               '$name!',
+
               style: const TextStyle(
                 color: Colors.green,
                 fontSize: 50,
@@ -95,6 +125,7 @@ class _HomePageState extends State<HomePage> {
 
             const Text(
               'How can we help?',
+
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 20,
@@ -104,12 +135,17 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 30),
 
             Container(
+
               width: double.infinity,
+
               height: 130,
 
               decoration: BoxDecoration(
+
                 color: Colors.white10,
-                borderRadius: BorderRadius.circular(20),
+
+                borderRadius:
+                BorderRadius.circular(20),
 
                 border: Border.all(
                   color: Colors.green,
@@ -118,9 +154,12 @@ class _HomePageState extends State<HomePage> {
               ),
 
               child: TextButton(
+
                 onPressed: () {
+
                   Navigator.push(
                     context,
+
                     MaterialPageRoute(
                       builder: (context) =>
                       const SafetyCompanionPage(),
@@ -129,11 +168,15 @@ class _HomePageState extends State<HomePage> {
                 },
 
                 child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+
+                  mainAxisAlignment:
+                  MainAxisAlignment.center,
 
                   children: [
+
                     Text(
                       'Tap to start',
+
                       style: TextStyle(
                         color: Colors.green,
                         fontSize: 18,
@@ -144,6 +187,7 @@ class _HomePageState extends State<HomePage> {
 
                     Text(
                       'Safety Companion',
+
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 24,
@@ -158,17 +202,24 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
 
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar:
+      BottomNavigationBar(
+
         backgroundColor: Colors.black,
 
-        type: BottomNavigationBarType.fixed,
+        type:
+        BottomNavigationBarType.fixed,
 
-        selectedItemColor: Colors.green,
-        unselectedItemColor: Colors.grey,
+        selectedItemColor:
+        Colors.green,
+
+        unselectedItemColor:
+        Colors.grey,
 
         currentIndex: 0,
 
         items: const [
+
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
@@ -180,46 +231,56 @@ class _HomePageState extends State<HomePage> {
           ),
 
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble_outline),
+            icon: Icon(
+              Icons.chat_bubble_outline,
+            ),
             label: 'Chat',
           ),
 
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
+            icon: Icon(
+              Icons.person_outline,
+            ),
             label: 'Profile',
           ),
         ],
 
         onTap: (index) async {
+
           if (index == 1) {
+
             Navigator.push(
               context,
+
               MaterialPageRoute(
-                builder: (context) => const EmergencyContactsPage(),
+                builder: (context) =>
+                const EmergencyContactsPage(),
               ),
             );
+
           } else if (index == 2) {
+
             Navigator.push(
               context,
+
               MaterialPageRoute(
-                builder: (context) => const ChatsPage(),
+                builder: (context) =>
+                const ChatsPage(),
               ),
             );
+
           } else if (index == 3) {
+
             await Navigator.push(
               context,
+
               MaterialPageRoute(
-                builder: (context) => const ProfilePage(),
+                builder: (context) =>
+                const ProfilePage(),
               ),
             );
 
-            await FirebaseAuth.instance.currentUser!.reload();
-
-            User? user = FirebaseAuth.instance.currentUser;
-
-            setState(() {
-              name = user?.displayName ?? 'User';
-            });
+            await loadUserName();
           }
         },
       ),

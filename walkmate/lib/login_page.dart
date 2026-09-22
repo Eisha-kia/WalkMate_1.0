@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'signup_page.dart';
 import 'home_page.dart';
-
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -12,25 +13,33 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController emailController =
+  TextEditingController();
+
+  TextEditingController passwordController =
+  TextEditingController();
 
   String errorMessage = '';
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.black,
+
       body: SingleChildScrollView(
-        reverse:true,
-         child: Padding(
-          padding: EdgeInsets.all(24),
+        reverse: true,
+
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment:
+            CrossAxisAlignment.stretch,
+
             children: [
 
-              SizedBox(height: 80),
+              const SizedBox(height: 80),
 
               Center(
                 child: Image.asset(
@@ -40,11 +49,12 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
 
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
 
-              Center(
+              const Center(
                 child: Text(
                   'Walkmate',
+
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -53,9 +63,10 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
 
-              Center(
+              const Center(
                 child: Text(
                   'Your safety, our priority.',
+
                   style: TextStyle(
                     fontSize: 12,
                     color: Colors.grey,
@@ -63,11 +74,12 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
 
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
 
-              Center(
+              const Center(
                 child: Text(
                   'Welcome Back',
+
                   style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.bold,
@@ -76,61 +88,104 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
 
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
 
-              Text(
+              const Text(
                 'Email',
-                style: TextStyle(color: Colors.white, fontSize: 14),
+
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                ),
               ),
 
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
 
               TextField(
                 controller: emailController,
+
                 autofocus: false,
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
+
+                keyboardType:
+                TextInputType.emailAddress,
+
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+
+                decoration: const InputDecoration(
                   hintText: 'Enter your email',
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                  ),
                 ),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
-              Text(
+              const Text(
                 'Password',
-                style: TextStyle(color: Colors.white, fontSize: 14),
+
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                ),
               ),
 
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
 
               TextField(
                 controller: passwordController,
+
                 autofocus: false,
+
                 obscureText: true,
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
+
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+
+                decoration: const InputDecoration(
                   hintText: 'Enter your password',
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                  ),
                 ),
               ),
 
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
 
               Text(
                 errorMessage,
-                style: TextStyle(color: Colors.red, fontSize: 13),
+
+                textAlign: TextAlign.center,
+
+                style: const TextStyle(
+                  color: Colors.red,
+                  fontSize: 13,
+                ),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               ElevatedButton(
-                onPressed: () {
-                  String email = emailController.text;
-                  String password = passwordController.text;
 
-                  if (email.isEmpty || password.isEmpty) {
+                onPressed: () async {
+
+                  String email =
+                  emailController.text.trim();
+
+                  String password =
+                      passwordController.text;
+
+                  if (email.isEmpty ||
+                      password.isEmpty) {
+
                     setState(() {
-                      errorMessage = 'Please fill in all fields';
+                      errorMessage =
+                      'Please fill in all fields';
                     });
+
                     return;
                   }
 
@@ -138,17 +193,47 @@ class _LoginPageState extends State<LoginPage> {
                     errorMessage = '';
                   });
 
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
-                  );
+                  try {
+
+                    await FirebaseAuth.instance
+                        .signInWithEmailAndPassword(
+                      email: email,
+                      password: password,
+                    );
+
+                    if (context.mounted) {
+
+                      Navigator.pushReplacement(
+                        context,
+
+                        MaterialPageRoute(
+                          builder: (context) =>
+                          const HomePage(),
+                        ),
+                      );
+                    }
+
+                  } on FirebaseAuthException catch (e) {
+
+                    setState(() {
+
+                      errorMessage =
+                          e.message ?? e.code;
+                    });
+                  }
                 },
+
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green.shade700,
-                  padding: EdgeInsets.all(16),
+                  backgroundColor:
+                  Colors.green.shade700,
+
+                  padding:
+                  const EdgeInsets.all(16),
                 ),
-                child: Text(
+
+                child: const Text(
                   'Log In',
+
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -157,21 +242,33 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
 
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
 
               ElevatedButton(
+
                 onPressed: () {
+
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SignUpPage()),
+
+                    MaterialPageRoute(
+                      builder: (context) =>
+                      const SignUpPage(),
+                    ),
                   );
                 },
+
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green.shade700,
-                  padding: EdgeInsets.all(16),
+                  backgroundColor:
+                  Colors.green.shade700,
+
+                  padding:
+                  const EdgeInsets.all(16),
                 ),
-                child: Text(
+
+                child: const Text(
                   'Sign Up',
+
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -180,8 +277,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
 
-              SizedBox(height: 40),
-
+              const SizedBox(height: 40),
             ],
           ),
         ),
