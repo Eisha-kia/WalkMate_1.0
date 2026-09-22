@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'chats.dart';
+import 'profile_page.dart';
 
 class Contact {
   String name;
@@ -82,8 +84,47 @@ class _EmergencyContactsPageState extends State<EmergencyContactsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< Updated upstream
       backgroundColor: Colors.black,
       appBar: AppBar(title: const Text("Emergency Contacts"), backgroundColor: Colors.green),
+=======
+      backgroundColor: bg,
+
+      appBar: AppBar(
+        backgroundColor: bg,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Emergency Contacts",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              "Manage your emergency contacts",
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
+      ),
+
+>>>>>>> Stashed changes
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -114,6 +155,54 @@ class _EmergencyContactsPageState extends State<EmergencyContactsPage> {
           ],
         ),
       ),
+<<<<<<< Updated upstream
+=======
+
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.black,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.green,
+        unselectedItemColor: Colors.grey,
+        currentIndex: 1,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.people),
+            label: 'Contacts',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat_bubble_outline),
+            label: 'Chat',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline),
+            label: 'Profile',
+          ),
+        ],
+        onTap: (index) {
+          if (index == 0) {
+            Navigator.pop(context);
+          }
+
+          if (index == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ChatsPage()),
+            );
+          }
+
+          if (index == 3) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProfilePage()),
+            );
+          }
+        },
+      ),
+>>>>>>> Stashed changes
     );
   }
 }

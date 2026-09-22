@@ -1,11 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'emergency_contacts.dart';
 import 'chats.dart';
 import 'profile_page.dart';
 import 'safety_companion.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+  String name = 'User';
+
+  @override
+  void initState() {
+    super.initState();
+
+    User? user = FirebaseAuth.instance.currentUser;
+
+    name = user?.displayName ?? 'User';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +64,10 @@ class HomePage extends StatelessWidget {
 
       body: Padding(
         padding: const EdgeInsets.all(20),
+
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+
           children: [
             const SizedBox(height: 50),
 
@@ -61,11 +82,11 @@ class HomePage extends StatelessWidget {
 
             const SizedBox(height: 5),
 
-            const Text(
-              'ALEX!',
-              style: TextStyle(
+            Text(
+              '$name!',
+              style: const TextStyle(
                 color: Colors.green,
-                fontSize: 80,
+                fontSize: 50,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -83,11 +104,13 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 30),
 
             Container(
-              width: 400,
+              width: double.infinity,
               height: 130,
+
               decoration: BoxDecoration(
                 color: Colors.white10,
                 borderRadius: BorderRadius.circular(20),
+
                 border: Border.all(
                   color: Colors.green,
                   width: 2,
@@ -99,13 +122,15 @@ class HomePage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const SafetyCompanionPage(),
+                      builder: (context) =>
+                      const SafetyCompanionPage(),
                     ),
                   );
                 },
 
                 child: const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+
                   children: [
                     Text(
                       'Tap to start',
@@ -135,9 +160,12 @@ class HomePage extends StatelessWidget {
 
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.black,
+
         type: BottomNavigationBarType.fixed,
+
         selectedItemColor: Colors.green,
         unselectedItemColor: Colors.grey,
+
         currentIndex: 0,
 
         items: const [
@@ -145,42 +173,65 @@ class HomePage extends StatelessWidget {
             icon: Icon(Icons.home),
             label: 'Home',
           ),
+
           BottomNavigationBarItem(
             icon: Icon(Icons.people),
             label: 'Contacts',
           ),
+
           BottomNavigationBarItem(
             icon: Icon(Icons.chat_bubble_outline),
             label: 'Chat',
           ),
+
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),
             label: 'Profile',
           ),
         ],
 
-        onTap: (index) {
+        onTap: (index) async {
+
           if (index == 1) {
+
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const EmergencyContactsPage(),
+                builder: (context) =>
+                const EmergencyContactsPage(),
               ),
             );
-          } else if (index == 2) {
+          }
+
+          else if (index == 2) {
+
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const ChatsPage(),
+                builder: (context) =>
+                const ChatsPage(),
               ),
             );
-          } else if (index == 3) {
-            Navigator.push(
+          }
+
+          else if (index == 3) {
+
+            await Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const ProfilePage(),
+                builder: (context) =>
+                const ProfilePage(),
               ),
             );
+
+            await FirebaseAuth.instance.currentUser!.reload();
+
+            User? user =
+                FirebaseAuth.instance.currentUser;
+
+            setState(() {
+              name = user?.displayName ?? 'User';
+            });
           }
         },
       ),

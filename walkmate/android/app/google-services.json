@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "58330197483",
+    "project_id": "walkmate-2",
+    "storage_bucket": "walkmate-2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:58330197483:android:35a9808cd683b806d07dae",
+        "android_client_info": {
+          "package_name": "com.example.walkmate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4e7ecFE25n3QcAKfZkvgINlhha3Ln0W4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

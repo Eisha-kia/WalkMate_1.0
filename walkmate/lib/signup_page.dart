@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'login_page.dart';
+import 'auth_service.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -9,172 +10,193 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   String errorMessage = '';
 
+  AuthService authService = AuthService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+
       body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
+        child: Column(
+          children: [
+            const SizedBox(height: 40),
 
-              SizedBox(height: 80),
+            const Text(
+              'Create Account',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
 
-              Center(
-                child: Image.asset(
-                  'assets/logo.png',
-                  height: 80,
-                  width: 80,
+            const SizedBox(height: 30),
+
+            const Text(
+              'Name',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+              ),
+            ),
+
+            const SizedBox(height: 8),
+
+            TextField(
+              controller: nameController,
+              autofocus: false,
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+              decoration: const InputDecoration(
+                hintText: 'Enter your name',
+                hintStyle: TextStyle(
+                  color: Colors.grey,
                 ),
               ),
+            ),
 
-              SizedBox(height: 8),
+            const SizedBox(height: 20),
 
-              Center(
-                child: Text(
-                  'Walkmate',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green,
-                  ),
+            const Text(
+              'Email',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+              ),
+            ),
+
+            const SizedBox(height: 8),
+
+            TextField(
+              controller: emailController,
+              autofocus: false,
+              keyboardType: TextInputType.emailAddress,
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+              decoration: const InputDecoration(
+                hintText: 'Enter your email',
+                hintStyle: TextStyle(
+                  color: Colors.grey,
                 ),
               ),
+            ),
 
-              Center(
-                child: Text(
-                  'Your safety, our priority.',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey,
-                  ),
+            const SizedBox(height: 20),
+
+            const Text(
+              'Password',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+              ),
+            ),
+
+            const SizedBox(height: 8),
+
+            TextField(
+              controller: passwordController,
+              autofocus: false,
+              obscureText: true,
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+              decoration: const InputDecoration(
+                hintText: 'Enter your password',
+                hintStyle: TextStyle(
+                  color: Colors.grey,
                 ),
               ),
+            ),
 
-              SizedBox(height: 30),
+            const SizedBox(height: 10),
 
-              Center(
-                child: Text(
-                  'Create Account',
-                  style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
+            Text(
+              errorMessage,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Colors.red,
+                fontSize: 13,
               ),
+            ),
 
-              SizedBox(height: 30),
+            const SizedBox(height: 20),
 
-              Text(
-                'Name',
-                style: TextStyle(color: Colors.white, fontSize: 14),
-              ),
+            ElevatedButton(
+              onPressed: () async {
+                String name = nameController.text.trim();
+                String email = emailController.text.trim();
+                String password = passwordController.text;
 
-              SizedBox(height: 8),
-
-              TextField(
-                controller: nameController,
-                autofocus: false,
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  hintText: 'Enter your name',
-                ),
-              ),
-
-              SizedBox(height: 20),
-
-              Text(
-                'Email',
-                style: TextStyle(color: Colors.white, fontSize: 14),
-              ),
-
-              SizedBox(height: 8),
-
-              TextField(
-                controller: emailController,
-                autofocus: false,
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  hintText: 'Enter your email',
-                ),
-              ),
-
-              SizedBox(height: 20),
-
-              Text(
-                'Password',
-                style: TextStyle(color: Colors.white, fontSize: 14),
-              ),
-
-              SizedBox(height: 8),
-
-              TextField(
-                controller: passwordController,
-                autofocus: false,
-                obscureText: true,
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  hintText: 'Enter your password',
-                ),
-              ),
-
-              SizedBox(height: 10),
-
-              Text(
-                errorMessage,
-                style: TextStyle(color: Colors.red, fontSize: 13),
-              ),
-
-              SizedBox(height: 20),
-
-              ElevatedButton(
-                onPressed: () {
-                  String name = nameController.text;
-                  String email = emailController.text;
-                  String password = passwordController.text;
-
-                  if (name.isEmpty || email.isEmpty || password.isEmpty) {
-                    setState(() {
-                      errorMessage = 'Please fill in all fields';
-                    });
-                    return;
-                  }
-
+                if (name.isEmpty ||
+                    email.isEmpty ||
+                    password.isEmpty) {
                   setState(() {
-                    errorMessage = '';
+                    errorMessage = 'Please fill in all fields';
                   });
+                  return;
+                }
 
-                  Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green.shade700,
-                  padding: EdgeInsets.all(16),
-                ),
-                child: Text(
-                  'Sign Up',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                if (!email.contains('@')) {
+                  setState(() {
+                    errorMessage = 'Please enter a valid email';
+                  });
+                  return;
+                }
+
+                if (password.length < 6) {
+                  setState(() {
+                    errorMessage =
+                    'Password must be at least 6 characters';
+                  });
+                  return;
+                }
+
+                try {
+                  await authService.createAccount(
+                    email: email,
+                    password: password,
+                  );
+
+                  await authService.updateUsername(
+                    username: name,
+                  );
+
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                  }
+                } catch (e) {
+                  setState(() {
+                    errorMessage = e.toString();
+                  });
+                }
+              },
+
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green.shade700,
+                padding: const EdgeInsets.all(16),
               ),
 
-              SizedBox(height: 40),
+              child: const Text(
+                'Sign Up',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
 
-            ],
-          ),
+            const SizedBox(height: 40),
+          ],
         ),
       ),
     );
