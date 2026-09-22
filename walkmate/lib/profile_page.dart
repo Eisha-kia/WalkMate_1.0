@@ -23,129 +23,12 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    loadUser();
-  }
-
-  void loadUser() {
 
     User? user =
         FirebaseAuth.instance.currentUser;
 
-    setState(() {
-      name = user?.displayName ?? 'User';
-      email = user?.email ?? '';
-    });
-  }
-
-  void editName() {
-
-    nameController.text = name;
-
-    showDialog(
-      context: context,
-
-      builder: (dialogContext) {
-
-        return AlertDialog(
-
-          backgroundColor: Colors.black,
-
-          title: const Text(
-            'Edit Name',
-
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-
-          content: TextField(
-
-            controller: nameController,
-
-            style: const TextStyle(
-              color: Colors.white,
-            ),
-
-            decoration: const InputDecoration(
-              hintText: 'Enter new name',
-
-              hintStyle: TextStyle(
-                color: Colors.grey,
-              ),
-            ),
-          ),
-
-          actions: [
-
-            TextButton(
-
-              onPressed: () {
-                Navigator.pop(dialogContext);
-              },
-
-              child: const Text(
-                'Cancel',
-
-                style: TextStyle(
-                  color: Colors.grey,
-                ),
-              ),
-            ),
-
-            ElevatedButton(
-
-              onPressed: () async {
-
-                String newName =
-                nameController.text.trim();
-
-                if (newName.isEmpty) {
-                  return;
-                }
-
-                User? user =
-                    FirebaseAuth.instance.currentUser;
-
-                if (user == null) {
-                  return;
-                }
-
-                await user.updateDisplayName(
-                  newName,
-                );
-
-                await user.reload();
-
-                User? updatedUser =
-                    FirebaseAuth.instance.currentUser;
-
-                if (mounted) {
-                  setState(() {
-                    name =
-                        updatedUser?.displayName ?? 'User';
-                  });
-                }
-
-                Navigator.pop(dialogContext);
-              },
-
-              style: ElevatedButton.styleFrom(
-                backgroundColor:
-                Colors.green.shade700,
-              ),
-
-              child: const Text(
-                'Save',
-
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
+    name = user?.displayName ?? 'User';
+    email = user?.email ?? '';
   }
 
   @override
@@ -170,171 +53,165 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
 
-      body: Padding(
+      body: SingleChildScrollView(
 
-        padding: const EdgeInsets.all(20),
+        child: Padding(
 
-        child: Column(
+          padding: const EdgeInsets.all(24),
 
-          children: [
+          child: Column(
 
-            const SizedBox(height: 30),
+            crossAxisAlignment:
+            CrossAxisAlignment.stretch,
 
-            const CircleAvatar(
+            children: [
 
-              radius: 55,
+              const SizedBox(height: 40),
 
-              backgroundColor: Colors.green,
+              const CircleAvatar(
 
-              child: Icon(
-                Icons.person,
-                size: 60,
-                color: Colors.white,
-              ),
-            ),
+                radius: 50,
 
-            const SizedBox(height: 20),
+                backgroundColor:
+                Colors.green,
 
-            Text(
-              name,
-
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 5),
-
-            Text(
-              email,
-
-              style: const TextStyle(
-                color: Colors.grey,
-                fontSize: 16,
-              ),
-            ),
-
-            const SizedBox(height: 40),
-
-            Container(
-
-              width: double.infinity,
-
-              padding: const EdgeInsets.all(18),
-
-              decoration: BoxDecoration(
-
-                color: Colors.white10,
-
-                borderRadius:
-                BorderRadius.circular(15),
-
-                border: Border.all(
-                  color: Colors.green,
-                  width: 1.5,
+                child: Icon(
+                  Icons.person,
+                  size: 55,
+                  color: Colors.white,
                 ),
               ),
 
-              child: Row(
+              const SizedBox(height: 20),
 
-                children: [
+              Text(
+                name,
 
-                  const Icon(
-                    Icons.person_outline,
-                    color: Colors.green,
-                    size: 30,
-                  ),
+                textAlign:
+                TextAlign.center,
 
-                  const SizedBox(width: 15),
-
-                  Column(
-
-                    crossAxisAlignment:
-                    CrossAxisAlignment.start,
-
-                    children: [
-
-                      const Text(
-                        'Name',
-
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 14,
-                        ),
-                      ),
-
-                      const SizedBox(height: 4),
-
-                      Text(
-                        name,
-
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight:
-                          FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 28,
+                  fontWeight:
+                  FontWeight.bold,
+                ),
               ),
-            ),
 
-            const SizedBox(height: 20),
+              const SizedBox(height: 5),
 
-            SizedBox(
+              Text(
+                email,
 
-              width: double.infinity,
+                textAlign:
+                TextAlign.center,
 
-              child: ElevatedButton(
+                style: const TextStyle(
+                  color: Colors.grey,
+                  fontSize: 16,
+                ),
+              ),
+
+              const SizedBox(height: 40),
+
+              const Text(
+                'Name',
+
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                ),
+              ),
+
+              const SizedBox(height: 8),
+
+              TextField(
+
+                controller:
+                nameController,
+
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+
+                decoration:
+                const InputDecoration(
+
+                  hintText:
+                  'Enter your new name',
+
+                  hintStyle:
+                  TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              ElevatedButton(
 
                 onPressed: () {
-                  editName();
+
+                  String newName =
+                  nameController
+                      .text
+                      .trim();
+
+                  if (newName.isEmpty) {
+                    return;
+                  }
+
+                  User? user =
+                      FirebaseAuth
+                          .instance
+                          .currentUser;
+
+                  user!
+                      .updateDisplayName(
+                    newName,
+                  )
+                      .then((_) {
+
+                    setState(() {
+                      name = newName;
+                    });
+
+                    nameController.clear();
+                  });
                 },
 
-                style: ElevatedButton.styleFrom(
+                style:
+                ElevatedButton.styleFrom(
 
                   backgroundColor:
                   Colors.green.shade700,
 
                   padding:
                   const EdgeInsets.all(16),
-
-                  shape:
-                  RoundedRectangleBorder(
-                    borderRadius:
-                    BorderRadius.circular(15),
-                  ),
                 ),
 
                 child: const Text(
-                  'Edit Profile',
+                  'Save Name',
 
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 17,
+                    fontSize: 16,
+                    fontWeight:
+                    FontWeight.bold,
                   ),
                 ),
               ),
-            ),
 
-            const SizedBox(height: 15),
+              const SizedBox(height: 20),
 
-            SizedBox(
+              ElevatedButton(
 
-              width: double.infinity,
+                onPressed: () {
 
-              child: OutlinedButton(
-
-                onPressed: () async {
-
-                  await FirebaseAuth.instance
-                      .signOut();
-
-                  if (context.mounted) {
+                  FirebaseAuth.instance
+                      .signOut()
+                      .then((_) {
 
                     Navigator.pushAndRemoveUntil(
                       context,
@@ -346,43 +223,40 @@ class _ProfilePageState extends State<ProfilePage> {
 
                           (route) => false,
                     );
-                  }
+                  });
                 },
 
-                style: OutlinedButton.styleFrom(
+                style:
+                ElevatedButton.styleFrom(
+
+                  backgroundColor:
+                  Colors.red,
 
                   padding:
                   const EdgeInsets.all(16),
-
-                  side: const BorderSide(
-                    color: Colors.red,
-                  ),
-
-                  shape:
-                  RoundedRectangleBorder(
-                    borderRadius:
-                    BorderRadius.circular(15),
-                  ),
                 ),
 
                 child: const Text(
                   'Logout',
 
                   style: TextStyle(
-                    color: Colors.red,
-                    fontSize: 17,
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight:
+                    FontWeight.bold,
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
 
       bottomNavigationBar:
       BottomNavigationBar(
 
-        backgroundColor: Colors.black,
+        backgroundColor:
+        Colors.black,
 
         type:
         BottomNavigationBarType.fixed,
