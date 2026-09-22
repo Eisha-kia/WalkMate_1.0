@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'chats.dart';
 import 'emergency_contacts.dart';
+import 'login_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -334,7 +335,17 @@ class _ProfilePageState extends State<ProfilePage> {
                       .signOut();
 
                   if (context.mounted) {
-                    Navigator.pop(context);
+
+                    Navigator.pushAndRemoveUntil(
+                      context,
+
+                      MaterialPageRoute(
+                        builder: (context) =>
+                        const LoginPage(),
+                      ),
+
+                          (route) => false,
+                    );
                   }
                 },
 
